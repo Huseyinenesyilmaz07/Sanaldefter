@@ -1,4 +1,4 @@
-import { defineConfig, envField } from 'astro/config';
+import { defineConfig, envField, fontProviders } from 'astro/config';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
@@ -26,6 +26,64 @@ export default defineConfig({
       PUBLIC_EDIT_POST_URL: envField.string({ context: "client", access: "public", optional: true, default: "" }),
     },
   },
+  fonts: [
+    {
+      provider: fontProviders.local(),
+      name: "wotfard",
+      cssVariable: "--font-wotfard",
+      options: {
+        variants: [
+          {
+            weight: 400,
+            style: "normal",
+            src: ["./src/assets/fonts/wotfard.woff2", "./src/assets/fonts/wotfard.ttf"],
+          },
+        ],
+      },
+    },
+    {
+      provider: fontProviders.local(),
+      name: "sriracha",
+      cssVariable: "--font-sriracha",
+      options: {
+        variants: [
+          {
+            weight: 400,
+            style: "normal",
+            src: ["./src/assets/fonts/sriracha.woff2"],
+          },
+        ],
+      },
+    },
+    {
+      provider: fontProviders.local(),
+      name: "firacode",
+      cssVariable: "--font-firacode",
+      options: {
+        variants: [
+          {
+            weight: 400,
+            style: "normal",
+            src: ["./src/assets/fonts/firacode.woff2"],
+          },
+        ],
+      },
+    },
+    {
+      provider: fontProviders.local(),
+      name: "cascadia-code",
+      cssVariable: "--font-cascadia-code",
+      options: {
+        variants: [
+          {
+            weight: 400,
+            style: "normal",
+            src: ["./src/assets/fonts/cascadia-code.woff2"],
+          },
+        ],
+      },
+    },
+  ],
   integrations: [
     mdx({
       extendMarkdownConfig: true,
