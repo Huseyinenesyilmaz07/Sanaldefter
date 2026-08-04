@@ -5,7 +5,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 // Tema ayarlarını doğrudan dosya içinde tanımlıyoruz (Hatanın %100 çözümü)
 const SITE = {
-  website: "https://enesinsanaldefteri.com.tr",
+  website: process.env.CF_PAGES_URL || "https://enesinsanaldefteri.com.tr",
   showArchives: true,
 };
 
