@@ -1,4 +1,4 @@
-import { SITE } from "@/config";
+import { SITE } from "../config";
 import type { ContentEntry } from "./contentEntry";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";

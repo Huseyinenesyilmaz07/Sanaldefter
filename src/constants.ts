@@ -13,7 +13,7 @@ import {
   PUBLIC_SOCIAL_LINKEDIN,
   PUBLIC_SOCIAL_EMAIL,
 } from "astro:env/client";
-import { SITE } from "@/config";
+import { SITE } from "./config";
 
 interface Social {
   name: string;
