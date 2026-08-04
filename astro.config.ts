@@ -5,13 +5,13 @@ import tailwindcss from '@tailwindcss/vite';
 
 // Tema ayarlarını doğrudan dosya içinde tanımlıyoruz (Hatanın %100 çözümü)
 const SITE = {
-  website: process.env.CF_PAGES_URL || "https://enesinsanaldefteri.com.tr",
+  website: "https://sanaldefter.pages.dev",
   showArchives: true,
 };
 
 export default defineConfig({
   output: "static",
-  // site: SITE.website,
+  site: SITE.website,
   prefetch: {
     prefetchAll: true,
     defaultStrategy: "hover",
