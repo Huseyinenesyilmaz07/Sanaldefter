@@ -2,9 +2,10 @@ import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
+import { SITE } from './src/config'; // Hatanı çözen ekleme burası!
 
 export default defineConfig({
-  output: "static", // Cloudflare Pages'in SSR'a zorlamasını engeller
+  output: "static",
   site: SITE.website,
   prefetch: {
     prefetchAll: true,
@@ -19,6 +20,6 @@ export default defineConfig({
     }),
   ],
   vite: {
-    plugins: [tailwindcss() as any], // TypeScript tip hatasını (rolldown/vite) teğet geçer
+    plugins: [tailwindcss() as any],
   },
 });
