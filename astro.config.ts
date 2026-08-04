@@ -1,4 +1,4 @@
-import { defineConfig } from 'astro/config';
+import { defineConfig, envField } from 'astro/config';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
@@ -15,6 +15,16 @@ export default defineConfig({
   prefetch: {
     prefetchAll: true,
     defaultStrategy: "hover",
+  },
+  env: {
+    schema: {
+      PUBLIC_SOCIAL_GITHUB: envField.string({ context: "client", access: "public", optional: true, default: "" }),
+      PUBLIC_SOCIAL_X: envField.string({ context: "client", access: "public", optional: true, default: "" }),
+      PUBLIC_SOCIAL_LINKEDIN: envField.string({ context: "client", access: "public", optional: true, default: "" }),
+      PUBLIC_SOCIAL_EMAIL: envField.string({ context: "client", access: "public", optional: true, default: "" }),
+      PUBLIC_GOOGLE_SITE_VERIFICATION: envField.string({ context: "client", access: "public", optional: true, default: "" }),
+      PUBLIC_EDIT_POST_URL: envField.string({ context: "client", access: "public", optional: true, default: "" }),
+    },
   },
   integrations: [
     mdx({
