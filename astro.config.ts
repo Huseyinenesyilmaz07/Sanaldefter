@@ -11,7 +11,7 @@ const SITE = {
 
 export default defineConfig({
   output: "static",
-  site: SITE.website,
+  // site: SITE.website,
   prefetch: {
     prefetchAll: true,
     defaultStrategy: "hover",
